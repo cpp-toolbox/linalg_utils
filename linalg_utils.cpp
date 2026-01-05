@@ -13,6 +13,25 @@ std::function<glm::vec4(const glm::vec4 &)> make_matrix_multiplier(const glm::ma
     return [m](const glm::vec4 &v) -> glm::vec4 { return m * v; };
 }
 
+glm::vec2 rotate_vector(const glm::vec2 &v, float t) {
+    // specific cases where no trig funcs are required
+    if (t == turns::one_quarter_turn) { 
+        return glm::vec2(-v.y, v.x);
+    } else if (t == -turns::one_quarter_turn) { 
+        return glm::vec2(v.y, -v.x);
+    } else if (t == turns::one_half_turn || t == -turns::one_half_turn) { 
+        return glm::vec2(-v.x, -v.y);
+    } else if (t == 0.0f || t == turns::full_turn || t == -turns::full_turn) { 
+        return v;
+    }
+
+    // general case
+    float angle_rad = t * 2.0f * glm::pi<float>();
+    float cos_theta = std::cos(angle_rad);
+    float sin_theta = std::sin(angle_rad);
+    return glm::vec2(v.x * cos_theta - v.y * sin_theta, v.x * sin_theta + v.y * cos_theta);
+}
+
 glm::mat4 create_translation_and_look_transform(const glm::vec3 &position, const glm::vec3 &look_vector,
                                                 const glm::vec3 &up_hint) {
     // normalize the look vector (forward direction)

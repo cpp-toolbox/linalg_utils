@@ -70,6 +70,8 @@ class Plane {
     glm::vec3 point_on_plane; // reference point on plane
 };
 
+glm::vec2 rotate_vector(const glm::vec2 &v, float turns);
+
 // a billboard matrix is one such that it takes the basis and transforms it to be the basis that is passed in
 // this allows you to take quads and make them face the camera very easily which is the main use case
 // NOTE: look doesn't always have to be the direction that the camera is facing, sometimes you might want to instead
